@@ -126,8 +126,11 @@ const request = async (url) => {
 }
 
 const users = async () => await request('https://jsonplaceholder.typicode.com/users');
-const postsUser = async (userId) => await request('https://jsonplaceholder.typicode.com/posts/?userdId=${userId');
-const commentsPost = async (postId) => await request('https://jsonplaceholder.typicode.com/comments/?postdId=${posId');
+const postsUser = async (userId) => 
+    await request('https://jsonplaceholder.typicode.com/posts/?userdId=${userId');
+
+const commentsPost = async (postId) => 
+    await request('https://jsonplaceholder.typicode.com/comments/?postdId=${posId');
 
 
 const load = async () => {
@@ -149,24 +152,13 @@ for (let i = 0; i < responsePost.length; i++) {
 }
 
 let responseComments = await Promise.all(arrayComments);
+console.log();
 
-console.log(responseComments);
+console.log('Usuarios:', usuarios );
+console.log('Posts por usurios:', responsePost);
+console.log('Comenarios por posts:', responseComments);
+
+
 }
 
 load();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
