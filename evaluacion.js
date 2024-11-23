@@ -152,7 +152,7 @@ for (let i = 0; i < responsePost.length; i++) {
 }
 
 let responseComments = await Promise.all(arrayComments);
-console.log();
+console.log(usuarios);
 
 console.log('Usuarios:', usuarios );
 console.log('Posts por usurios:', responsePost);
