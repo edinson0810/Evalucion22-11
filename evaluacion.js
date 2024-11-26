@@ -118,47 +118,92 @@
 
 
 
-// ejercicio
+// ejercicio instructor
 
-const request = async (url) => {
-    let response = await fetch(`${url}`);
-    return await response.json()
-}
+// const request = async (url) => {
+//     let response = await fetch(`${url}`);
+//     return await response.json()
+// }
 
-const users = async () => await request('https://jsonplaceholder.typicode.com/users');
-const postsUser = async (userId) => 
-    await request('https://jsonplaceholder.typicode.com/posts/?userdId=${userId');
+// const users = async () => await request('https://jsonplaceholder.typicode.com/users');
+// const postsUser = async (userId) => 
+//     await request('https://jsonplaceholder.typicode.com/posts/?userdId=${userId');
 
-const commentsPost = async (postId) => 
-    await request('https://jsonplaceholder.typicode.com/comments/?postdId=${posId');
-
-
-const load = async () => {
-    let usuarios = await users();
-    let arrayPosts = [];
-    let arrayComments = [];
-
-for ( const usuario of usuarios) {
-    arrayPosts.push(postsUser(usuario.id))
-}
+// const commentsPost = async (postId) => 
+//     await request('https://jsonplaceholder.typicode.com/comments/?postdId=${posId');
 
 
+// const load = async () => {
+//     let usuarios = await users();
+//     let arrayPosts = [];
+//     let arrayComments = [];
 
-let responsePost = await Promise.all(arrayPosts);
-
-for (let i = 0; i < responsePost.length; i++) {
-    const post = responsePost[i][i];
-    arrayComments.push(commentsPost(post.id))
-}
-
-let responseComments = await Promise.all(arrayComments);
-console.log(usuarios);
-
-console.log('Usuarios:', usuarios );
-console.log('Posts por usurios:', responsePost);
-console.log('Comenarios por posts:', responseComments);
+// for ( const usuario of usuarios) {
+//     arrayPosts.push(postsUser(usuario.id))
+// }
 
 
-}
 
-load();
+// let responsePost = await Promise.all(arrayPosts);
+
+// for (let i = 0; i < responsePost.length; i++) {
+//     const post = responsePost[i][i];
+//     arrayComments.push(commentsPost(post.id))
+// }
+
+
+// let responseComments = await Promise.all(arrayComments);
+
+
+// console.log('Usuarios:', usuarios );
+// console.log('Posts por usurios:', responsePost);
+// console.log('Comenarios por posts:', responseComments);
+
+
+// }
+
+// load();
+
+
+
+
+// nueva forma
+
+const request = async (url) => { 
+    const response = await fetch(url); 
+    if (!response.ok) throw new Error("Error al realizar la solicitud"); 
+    return await response.json();
+ }; 
+ 
+ const users = async () => await request('https://jsonplaceholder.typicode.com/users');
+  const postsUser = async (userId) => await request(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
+   const commentsPost = async (postId) => await request(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`);
+
+   const load = async () => {
+     try { 
+    // Obtener todos los usuarios 
+    const usuarios = await users(); 
+    const resultado = [];
+    
+    for (const usuario of usuarios) { 
+        // Obtener los posts de cada usuario 
+        const posts = await postsUser(usuario.id); 
+        const postsConComentarios = [];
+        
+    for (const post of posts) { 
+        // Obtener los comentarios de cada post 
+    const comentarios = await commentsPost(post.id); 
+    postsConComentarios.push({ ...post, comentarios });
+ } 
+ 
+ // Agregar los posts con comentarios al usuario 
+ resultado.push({ ...usuario, posts: postsConComentarios }); 
+} 
+
+// Mostrar usuarios con sus posts y comentarios 
+console.log(resultado); 
+} catch (error) { 
+    console.error("Error cargando los datos:", error);
+ }
+ };
+ load();
