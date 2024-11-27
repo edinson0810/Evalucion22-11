@@ -45,7 +45,6 @@ return { ...user, posts: postComentarios, album: fotico}
 
 console.log(respuesta);
 }
-
 cargar();
 
 
